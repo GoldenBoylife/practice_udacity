@@ -94,12 +94,17 @@ void visualization()
     //TODO: Loop over the log odds values of the cells and plot each cell state. 
     //map의모든 grid를 그리기
     for(double x =0; x< mapWidth / gridWidth ; x++) {
-        cout << "Remaining Rows=  " << mapWidth /gridWidth -x <<endl;
+        cout << "Remaining Rows= " << mapWidth /gridWidth -x <<endl;
         for(double y =0; y < mapHeight /gridHeight;y++) {
             /*unknown state를 녹색으로 표시*/ 
             if (l[x][y] == 0) { 
                 plt::plot({ x }, { y }, "g.");
             }
+
+
+
+
+            
             /*occupied state: black color*/
             else if (l[x][y] > 0) { 
                 plt::plot({ x }, { y }, "k.");
