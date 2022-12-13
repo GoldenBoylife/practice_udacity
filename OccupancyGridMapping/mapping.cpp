@@ -34,12 +34,17 @@ double inverseSensorModel(double x, double y, double theta, double xi, double yi
     double Zk, thetaK, sensorTheta;
     double minDelta = -1;
     double alpha = 200, beta = 20;
+    //
 
     //******************Compute r and phi**********************//
     double r = sqrt(pow(xi - x, 2) + pow(yi - y, 2));
     //로봇의 위치와 mi사이의 거리를 측정함
+    //이 mi가 Zmax(측정가능 최대값)보다 너머에 있으면 알수 없는 값이므로, unknown값이다. 
+
     double phi = atan2(yi - y, xi - x) - theta; 
     //?? 로봇 프레임 기준의 랜드마크 i 방향각(x축으로부터 회전한 각도) 라고 들었음. 
+    //로봇pose의 앵글값과 mi중심점(xi,yi)사이의 각도값
+    
 
     //Scaling Measurement to [-90 -37.5 -22.5 -7.5 7.5 22.5 37.5 90]
     //??센서의Theta가 -90도에서 90까지 회전하는 것인가??
@@ -60,14 +65,22 @@ double inverseSensorModel(double x, double y, double theta, double xi, double yi
             sensorTheta = (-37.5 + (i - 1) * 15) * (M_PI / 180);
         }
 
+        /*??무슨 용도지?*/
         if (fabs(phi - sensorTheta) < minDelta || minDelta == -1) {
+            //fabs  절대값 나옴. 
             Zk = sensorData[i];
             thetaK = sensorTheta;
             minDelta = fabs(phi - sensorTheta);
+            //fabs  절대값 나옴. 
         }
     }
 
     //******************Evaluate the three cases**********************//
+    /*
+        l0의 조건
+        1. mi의 중심점과 로봇위치점 사이의 거리인 r보다 더 큰 Z(측정치)니까 바깥 mi에 대한 것이다.
+        혹은 2. 센서의측정각도인 beta를 넘어가는 각.
+     */
     if (r > min((double)Zmax, Zk + alpha / 2) || fabs(phi - thetaK) > beta / 2 || Zk > Zmax || Zk < Zmin) {
         return l0;
     }

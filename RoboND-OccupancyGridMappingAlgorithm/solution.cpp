@@ -86,8 +86,10 @@ void visualization()
     //Graph Format
     plt::title("Map");
     plt::xlim(0, (int)(mapWidth / gridWidth));
+    //mapWidth =30000, gridWidth=100  -> x_limit = 300
     plt::ylim(0, (int)(mapHeight / gridHeight));
-
+    //y_limit = 150
+    
     // Draw every grid of the map:
     for (double x = 0; x < mapWidth / gridWidth; x++) {
         cout << "Remaining Rows= " << mapWidth / gridWidth - x << endl;
